@@ -1,8 +1,7 @@
-﻿#include "sprite.h"
-#include "txt_engine_elements.h"
+﻿#include "TXT_engine/sprite.h"
+#include "TXT_engine/txt_engine_elements.h"
 #include <fstream>
 #include <iostream>
-
 
 txt_engine::sprite::sprite(const std::string& text, const bool is_text, const char background)
 {
@@ -18,7 +17,7 @@ txt_engine::sprite::sprite(const std::string& text, const bool is_text, const ch
 }
 
 txt_engine::sprite::sprite(const std::string& text, const vector2 initial_position, const bool is_text,
-                           const char background)
+	const char background)
 {
 	if (is_text)
 	{
@@ -32,7 +31,7 @@ txt_engine::sprite::sprite(const std::string& text, const vector2 initial_positi
 	set_image_position(initial_position);
 }
 
-txt_engine::sprite::sprite(image base_image, const vector2 initial_position): image_{std::move(base_image)}
+txt_engine::sprite::sprite(image base_image, const vector2 initial_position) : image_{ std::move(base_image) }
 {
 	set_image_position(initial_position);
 }
@@ -42,7 +41,7 @@ void txt_engine::sprite::set_file_as_image(const std::string& filename)
 	image_.clear();
 	std::ifstream in_stream;
 	char temp{};
-	int i{0};
+	int i{ 0 };
 	image_.push_back(std::vector<char>{});
 	in_stream.open(filename);
 	while (!in_stream.eof())
@@ -55,7 +54,7 @@ void txt_engine::sprite::set_file_as_image(const std::string& filename)
 		}
 		else
 		{
-			i ++;
+			i++;
 			image_.push_back(std::vector<char>{});
 		}
 	}
@@ -65,11 +64,11 @@ void txt_engine::sprite::set_file_as_image(const std::string& filename)
 void txt_engine::sprite::set_text_as_image(const std::string& text)
 {
 	image_.clear();
-	int j{0};
-	int current_width{0};
-	int max_width{0};
+	int j{ 0 };
+	int current_width{ 0 };
+	int max_width{ 0 };
 	image_.push_back(std::vector<char>{});
-	for (int i{0}; i < static_cast<int>(text.length()); i++)
+	for (int i{ 0 }; i < static_cast<int>(text.length()); i++)
 	{
 		if (text[i] == '\n')
 		{
@@ -78,12 +77,12 @@ void txt_engine::sprite::set_text_as_image(const std::string& text)
 			{
 				max_width = current_width;
 			}
-			current_width = {0};
+			current_width = { 0 };
 			image_.push_back(std::vector<char>{});
 		}
 		else
 		{
-			current_width ++;
+			current_width++;
 			image_[j].push_back(text[i]);
 		}
 		if (current_width > max_width)
@@ -91,7 +90,7 @@ void txt_engine::sprite::set_text_as_image(const std::string& text)
 			max_width = current_width;
 		}
 	}
-	for (int i{0}; i < static_cast<int>(image_.size()); i++)
+	for (int i{ 0 }; i < static_cast<int>(image_.size()); i++)
 	{
 		image_[i].resize(max_width, background_);
 	}
@@ -104,7 +103,7 @@ void txt_engine::sprite::set_image_as_image(const image& image)
 
 void txt_engine::sprite::set_image_position(vector2 position)
 {
-	vertex_ = {position};
+	vertex_ = { position };
 }
 
 void txt_engine::sprite::set_image_background_chr(const char background_chr)
@@ -114,10 +113,10 @@ void txt_engine::sprite::set_image_background_chr(const char background_chr)
 
 void txt_engine::sprite::add_label(const std::string& label)
 {
-	const int txt_length{static_cast<int>(label.length())};
-	int j{0};
-	for (int i{get_image_width() / 2 - txt_length / 2}; i <= txt_length + get_image_width() / 2 - txt_length / 2 - 1; i
-	     ++)
+	const int txt_length{ static_cast<int>(label.length()) };
+	int j{ 0 };
+	for (int i{ get_image_width() / 2 - txt_length / 2 }; i <= txt_length + get_image_width() / 2 - txt_length / 2 - 1; i
+		++)
 	{
 		image_[get_image_height() / 2][i] = label[j];
 		j++;

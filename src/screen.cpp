@@ -1,15 +1,14 @@
 ﻿#include <chrono>
-#include "txt_engine_elements.h"
-#include "screen.h"
+#include "TXT_engine/txt_engine_elements.h"
+#include "TXT_engine/screen.h"
 #include <iostream>
-
 
 void txt_engine::screen::draw_border() const
 {
 	set_cursor_position(-1, -1);
-	for (int i{0}; i < get_height() + 2; i++)
+	for (int i{ 0 }; i < get_height() + 2; i++)
 	{
-		for (int j{0}; j < get_width() + 2; j++)
+		for (int j{ 0 }; j < get_width() + 2; j++)
 		{
 			if (i == 0 || i == get_height() + 1)
 			{
@@ -29,7 +28,7 @@ void txt_engine::screen::draw_border() const
 }
 
 txt_engine::screen::screen(const int width, const int height, const long double ups, const char width_boarder,
-                           const char height_boarder):
+	const char height_boarder) :
 	display(
 		width, height, width_boarder, height_boarder)
 {
@@ -45,14 +44,14 @@ void txt_engine::screen::screen_ups_set(long double ups)
 
 void txt_engine::screen::set_screen_size(const int width, const int height)
 {
-	const char temp_width{width_boarder_};
-	const char temp_height{height_boarder_};
+	const char temp_width{ width_boarder_ };
+	const char temp_height{ height_boarder_ };
 	width_boarder_ = ' ';
 	height_boarder_ = ' ';
 	draw_border();
 
 	map_.resize(height);
-	for (int i{0}; i < height; i++)
+	for (int i{ 0 }; i < height; i++)
 	{
 		map_[i].resize(width, ' ');
 	}
@@ -61,7 +60,6 @@ void txt_engine::screen::set_screen_size(const int width, const int height)
 	height_boarder_ = temp_height;
 	draw_border();
 }
-
 
 bool txt_engine::screen::update()
 {
@@ -83,9 +81,9 @@ int txt_engine::screen::get_delta_time() const
 
 void txt_engine::screen::render()
 {
-	for (int y{0}; y < get_height(); y++)
+	for (int y{ 0 }; y < get_height(); y++)
 	{
-		for (int x{0}; x < get_width(); x++)
+		for (int x{ 0 }; x < get_width(); x++)
 		{
 			if (map_[y][x] == previous_map_[y][x])
 			{

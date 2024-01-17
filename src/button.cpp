@@ -1,11 +1,11 @@
-﻿#include "button.h"
+﻿#include "TXT_engine/button.h"
 #include <fstream>
-#include "txt_engine_elements.h"
+#include "TXT_engine/txt_engine_elements.h"
 
 txt_engine::button::button(const std::string& text, const std::string& text_selected,
-                           const bool is_text,
-                           const char background): sprite(
-	text, is_text, background)
+	const bool is_text,
+	const char background) :
+	sprite(text, is_text, background)
 {
 	base_image_ = image_;
 	if (is_text)
@@ -21,9 +21,9 @@ txt_engine::button::button(const std::string& text, const std::string& text_sele
 }
 
 txt_engine::button::button(const std::string& text, const std::string& text_selected,
-                           const vector2 initial_position,
-                           const bool is_text, const char background): sprite(
-	text, initial_position, is_text, background)
+	const vector2 initial_position,
+	const bool is_text, const char background) : sprite(
+		text, initial_position, is_text, background)
 
 {
 	base_image_ = image_;
@@ -39,9 +39,8 @@ txt_engine::button::button(const std::string& text, const std::string& text_sele
 	image_ = base_image_;
 }
 
-
-txt_engine::button::button(const image& base_image, image selected_image, const vector2 initial_position):
-	sprite{base_image, initial_position}, base_image_{base_image}, selected_image_{std::move(selected_image)}
+txt_engine::button::button(const image& base_image, image selected_image, const vector2 initial_position) :
+	sprite{ base_image, initial_position }, base_image_{ base_image }, selected_image_{ std::move(selected_image) }
 
 {
 }
@@ -66,16 +65,15 @@ bool txt_engine::button::get_current_button_state() const
 	return is_selected_;
 }
 
-
 void txt_engine::button::set_file_as_image(const std::string& filename, const bool selected)
 {
-	image& drawing{base_image_};
+	image& drawing{ base_image_ };
 	if (selected) { drawing = selected_image_; }
 	drawing.clear();
 	drawing.clear();
 	std::ifstream in_stream;
 	char temp{};
-	int i{0};
+	int i{ 0 };
 	drawing.push_back(std::vector<char>{});
 	in_stream.open(filename);
 	while (!in_stream.eof())
@@ -88,7 +86,7 @@ void txt_engine::button::set_file_as_image(const std::string& filename, const bo
 		}
 		else
 		{
-			i ++;
+			i++;
 			drawing.push_back(std::vector<char>{});
 		}
 	}
@@ -97,14 +95,14 @@ void txt_engine::button::set_file_as_image(const std::string& filename, const bo
 
 void txt_engine::button::set_text_as_image(const std::string& text, const bool selected)
 {
-	image& drawing{base_image_};
+	image& drawing{ base_image_ };
 	if (selected) { drawing = selected_image_; }
 	drawing.clear();
-	int j{0};
-	int current_width{0};
-	int max_width{0};
+	int j{ 0 };
+	int current_width{ 0 };
+	int max_width{ 0 };
 	drawing.push_back(std::vector<char>{});
-	for (int i{0}; i < static_cast<int>(text.length()); i++)
+	for (int i{ 0 }; i < static_cast<int>(text.length()); i++)
 	{
 		if (text[i] == '\n')
 		{
@@ -113,12 +111,12 @@ void txt_engine::button::set_text_as_image(const std::string& text, const bool s
 			{
 				max_width = current_width;
 			}
-			current_width = {0};
+			current_width = { 0 };
 			drawing.push_back(std::vector<char>{});
 		}
 		else
 		{
-			current_width ++;
+			current_width++;
 			drawing[j].push_back(text[i]);
 		}
 		if (current_width > max_width)
@@ -126,7 +124,7 @@ void txt_engine::button::set_text_as_image(const std::string& text, const bool s
 			max_width = current_width;
 		}
 	}
-	for (int i{0}; i < static_cast<int>(drawing.size()); i++)
+	for (int i{ 0 }; i < static_cast<int>(drawing.size()); i++)
 	{
 		drawing[i].resize(max_width, background_);
 	}
@@ -153,10 +151,10 @@ void txt_engine::button::switch_state()
 
 void txt_engine::button::add_label(const std::string& label)
 {
-	const int txt_length{static_cast<int>(label.length())};
-	int j{0};
-	for (int i{get_image_width() / 2 - txt_length / 2}; i <= txt_length + get_image_width() / 2 - txt_length / 2 - 1; i
-	     ++)
+	const int txt_length{ static_cast<int>(label.length()) };
+	int j{ 0 };
+	for (int i{ get_image_width() / 2 - txt_length / 2 }; i <= txt_length + get_image_width() / 2 - txt_length / 2 - 1; i
+		++)
 	{
 		image_[get_image_height() / 2][i] = label[j];
 		base_image_[get_image_height() / 2][i] = label[j];
